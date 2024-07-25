@@ -6,7 +6,14 @@ import { useNavigation } from '@react-navigation/native';
 const Meeting = () => {
   const jitsiMeeting = useRef(null);
   const navigation = useNavigation();
+  const onReadyToClose = useCallback(() => {
+    if (jitsiMeeting.current) {
+      jitsiMeeting.current.close();
+    }
+    navigation.navigate('Home');
+  }, [navigation]);
   const eventListeners = {
+    onReadyToClose,
     onConferenceTerminated: (e) => {
       console.log('Conference terminated: ', e);
       navigation.navigate('Home');
@@ -24,7 +31,7 @@ const Meeting = () => {
       <JitsiMeeting
         config={{
           hideConferenceTimer: true,
-          subject: 'React Native SDK',
+          subject: 'Meeting',
           customToolbarButtons: [
             {
               icon: 'https://w7.pngwing.com/pngs/987/537/png-transparent-download-downloading-save-basic-user-interface-icon-thumbnail.png',
@@ -47,7 +54,7 @@ const Meeting = () => {
         room={'DemoMeet8'}
         serverURL="https://meet.jit.si/"
         userInfo={{
-          displayName: 'Sangeeta Bhagat',
+          displayName: 'Test User',
           email: 'sangeeeta8@gmail.com',
         }}
       />
