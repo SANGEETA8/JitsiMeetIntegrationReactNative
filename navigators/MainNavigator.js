@@ -12,8 +12,8 @@ const MainNavigator =()=>{
     return(
       <NavigationContainer>
         <Stack.Navigator>
-            <Stack.Screen name="Home" component={Home}/>
-            <Stack.Screen name="Meeting" component={Meeting}/>
+            <Stack.Screen name="Home" component={Home}  options={{headerShown:false}}/>
+            <Stack.Screen name="Meeting" component={Meeting}  options={{headerShown:false}}/>
         </Stack.Navigator>
       </NavigationContainer>
     )

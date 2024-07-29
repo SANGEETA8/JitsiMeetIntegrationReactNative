@@ -1,19 +1,47 @@
-import React, { useCallback, useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { View, StyleSheet, BackHandler, Platform, PermissionsAndroid, LogBox } from 'react-native';
 import { JitsiMeeting } from '@jitsi/react-native-sdk';
 import { useNavigation } from '@react-navigation/native';
+import PipHandler ,{usePipModeListener} from 'react-native-pip-android'
 
 const Meeting = () => {
+  LogBox.ignoreAllLogs(true);
   const jitsiMeeting = useRef(null);
   const navigation = useNavigation();
-  const onReadyToClose = useCallback(() => {
-    if (jitsiMeeting.current) {
-      jitsiMeeting.current.close();
+  const isInPipMode = usePipModeListener();
+  const eventPictureInPictureMode = useCallback(()=>{
+    if(!isInPipMode){
+      PipHandler.enterPipMode(500,500);
+    }else{
+      console.log('Already in PIP Mode')
     }
+  },[isInPipMode]);
+
+
+  useEffect(()=>{
+    const backhandler = BackHandler.addEventListener('hardwareBackPress',()=>{
+      console.log('PipModeEnter')
+      eventPictureInPictureMode();
+      return true;
+    })
+
+    return ()=>{
+      backhandler.remove();
+    } 
+
+  },[eventPictureInPictureMode])
+  
+  const onReadyToClose = useCallback(() => {
+    eventPictureInPictureMode();
     navigation.navigate('Home');
   }, [navigation]);
+
   const eventListeners = {
     onReadyToClose,
+    onEnterPictureInPicture:(e)=>{
+      eventPictureInPictureMode();
+      console.log('Conference in PIP mode',e)  
+    },
     onConferenceTerminated: (e) => {
       console.log('Conference terminated: ', e);
       navigation.navigate('Home');

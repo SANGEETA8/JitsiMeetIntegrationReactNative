@@ -1,19 +1,19 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Text, TouchableOpacity,View } from "react-native";
+import { Image, Text, TouchableOpacity,View } from "react-native";
 import { StyleSheet } from "react-native";
 
 const Home =()=>{
     const navigation = useNavigation();
     return(
         <View style ={styles.home}>
-            <Text style={[styles.text,{marginTop:10}]}>Welcome!!</Text>
+            <Text style={[styles.text,{marginTop:10,fontSize:30}]}>Welcome!</Text>
             <TouchableOpacity
-                color="blue"
                 onPress={() => navigation.navigate('Meeting')}
                 style={styles.button}>
-                <Text style={styles.text}> Join Now </Text>
+                <Text style={[styles.text,{color:'white',fontSize:18}]}> Join Now </Text>
              </TouchableOpacity>
+             <Image source={require('../assests/images/jitsi-meet.jpg')} style={styles.img}/>
         </View>
     )
 }
@@ -23,22 +23,25 @@ export default Home;
 const styles = StyleSheet.create({
     home:{
         flex:1,
-        backgroundColor:'White'
+        backgroundColor:'white',
     },
     text:{
-        fontSize:18,
-        fontWeight:'500',
+        fontWeight:'600',
         alignSelf:'center',
-        justifyContent:'center'
-       
+        justifyContent:'center',
     },
     button:{
-        height:32,
+        height:40,
         width:150,
         alignSelf:'center',
-        borderRadius:12,
-        backgroundColor:'blue',
-        marginTop:40
-
+        justifyContent:'center',
+        borderRadius:25,
+        backgroundColor:'#2596BE',
+        marginTop:30
+    },
+    img:{
+        width:400,
+        height:500,
+        marginTop:30
     }
 })
